@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: 30000,
 });
 
@@ -13,12 +13,12 @@ export const setAuthToken = (token) => {
   }
 };
 
-// ─── Authentication ───
+// Authentication
 export const loginUser = (data) => api.post('/auth/login', data);
 export const signupUser = (data) => api.post('/auth/signup', data);
 export const getMe = () => api.get('/auth/me');
 
-// ─── Disease Detection ───
+// Disease Detection
 export const diagnoseLeaf = (formData, onProgress) =>
   api.post('/diagnose', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
@@ -30,15 +30,15 @@ export const diagnoseLeaf = (formData, onProgress) =>
 export const getDiagnosisHistory = () => api.get('/diagnose/history');
 export const getDiagnosis = (id) => api.get(`/diagnose/${id}`);
 
-// ─── Soil Prediction ───
+// Soil Prediction
 export const predictSoil = (data) => api.post('/soil/predict', data);
 export const getSoilHistory = () => api.get('/soil/history');
 export const getSoilPrediction = (id) => api.get(`/soil/${id}`);
 
-// ─── Weather ───
+// Weather
 export const getWeather = (lat, lon) => api.get(`/weather/${lat}/${lon}`);
 
-// ─── Health ───
+// Health
 export const checkHealth = () => api.get('/health');
 
 export default api;
