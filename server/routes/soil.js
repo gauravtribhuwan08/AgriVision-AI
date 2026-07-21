@@ -24,8 +24,8 @@ router.post('/predict', auth, async (req, res) => {
     // Get weather data (real or simulated)
     const weatherData = await getWeather(latitude, longitude);
 
-    // Run soil prediction
-    const soilResult = predictSoil(latitude, longitude, soilType, weatherData);
+    // Run soil prediction (powered by Gemini AI)
+    const soilResult = await predictSoil(latitude, longitude, soilType, weatherData, locationName);
 
     const predictionData = {
       location: {

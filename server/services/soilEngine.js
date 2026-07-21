@@ -282,10 +282,92 @@ function generateMapGrid(lat, lon, nutrients) {
   };
 }
 
+const { GoogleGenAI } = require('@google/genai');
+
+/**
+ * Predict soil nutrients using Gemini AI based on location, soil type, and weather.
+ */
+async function predictSoilWithAI(lat, lon, locationName, providedSoilType, weatherData) {
+  if (!process.env.GEMINI_API_KEY) return null;
+
+  try {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const prompt = `You are an expert agricultural soil scientist and agronomist AI.
+Analyze and estimate real-world, region-accurate soil nutrient levels, soil health score, and organic/chemical fertilizer recommendations for this specific location:
+- Latitude: ${lat}
+- Longitude: ${lon}
+- Location Name: ${locationName || 'Unknown Location'}
+- Specified Soil Type: ${providedSoilType || 'Auto-detect based on geographic coordinates'}
+- Weather Context: Temp ${weatherData?.temp || 25}°C, Humidity ${weatherData?.humidity || 60}%, Rain ${weatherData?.rainfall || 0}mm
+
+Respond strictly with ONLY a raw valid JSON object (no markdown, no explanations, no code blocks):
+{
+  "soilType": "string (one of: 'Alluvial', 'Black', 'Red', 'Laterite', 'Desert', 'Mountain', 'Clay', 'Sandy', 'Loamy')",
+  "nutrients": {
+    "nitrogen": number (100-400),
+    "phosphorus": number (5-60),
+    "potassium": number (80-350),
+    "ph": number (4.5-9.0),
+    "organicCarbon": number (0.2-2.0),
+    "moisture": number (10-80),
+    "zinc": number (0.2-3.0),
+    "iron": number (2-25),
+    "sulphur": number (3-30)
+  },
+  "soilHealthScore": number (10-100),
+  "ndviIndex": number (0.2-0.95),
+  "fertilizerSchedule": [
+    {
+      "week": number,
+      "fertilizer": "string",
+      "quantity": "string",
+      "method": "string",
+      "nutrientTarget": "string",
+      "notes": "string"
+    }
+  ]
+}`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-flash-lite-latest',
+      contents: prompt
+    });
+
+    const raw = response.text.trim()
+      .replace(/^```json\s*/i, '')
+      .replace(/^```\s*/i, '')
+      .replace(/\s*```$/i, '')
+      .trim();
+
+    return JSON.parse(raw);
+  } catch (err) {
+    console.warn('⚠️ Soil AI prediction failed or rate limited:', err.message);
+    return null;
+  }
+}
+
 /**
  * Main prediction function
  */
-function predictSoil(lat, lon, providedSoilType, weatherData) {
+async function predictSoil(lat, lon, providedSoilType, weatherData, locationName) {
+  // Try real Gemini AI prediction first
+  const aiResult = await predictSoilWithAI(lat, lon, locationName, providedSoilType, weatherData);
+  
+  if (aiResult && aiResult.nutrients) {
+    console.log(`✅ Gemini AI estimated soil for (${lat}, ${lon}): ${aiResult.soilType}`);
+    const mapData = generateMapGrid(lat, lon, aiResult.nutrients);
+    return {
+      soilType: aiResult.soilType || providedSoilType || getSoilType(lat, lon),
+      nutrients: aiResult.nutrients,
+      soilHealthScore: typeof aiResult.soilHealthScore === 'number' ? aiResult.soilHealthScore : calculateHealthScore(aiResult.nutrients),
+      ndviIndex: typeof aiResult.ndviIndex === 'number' ? aiResult.ndviIndex : getNDVI(lat, lon),
+      fertilizerSchedule: Array.isArray(aiResult.fertilizerSchedule) && aiResult.fertilizerSchedule.length ? aiResult.fertilizerSchedule : generateFertilizerSchedule(aiResult.nutrients, weatherData),
+      mapData
+    };
+  }
+
+  // Fallback to deterministic pseudo-random engine if AI fails
+  console.log('🔄 Using fallback soil prediction engine');
   const soilType = providedSoilType || getSoilType(lat, lon);
   const nutrients = predictSoilNutrients(lat, lon, soilType);
   const healthScore = calculateHealthScore(nutrients);

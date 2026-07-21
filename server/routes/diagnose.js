@@ -13,10 +13,10 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
       return res.status(400).json({ success: false, message: 'No image file provided' });
     }
 
-    const { filename, originalname, mimetype } = req.file;
+    const { filename, originalname, mimetype, path: filePath } = req.file;
 
-    // Run simulated AI analysis
-    const analysis = analyzeImage(filename, mimetype);
+    // Run real Gemini Vision AI analysis on the uploaded image (falls back to deterministic simulation on quota limits)
+    const analysis = await analyzeImage(filePath, mimetype, originalname);
 
     const diagnosisData = {
       imagePath: `/uploads/${filename}`,

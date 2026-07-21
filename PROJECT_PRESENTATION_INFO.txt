@@ -1,0 +1,113 @@
+================================================================================
+                      AGRIVISION AI — PROJECT INFORMATION FOR PPT
+================================================================================
+
+--------------------------------------------------------------------------------
+SLIDE 1: TEAM & PROJECT OVERVIEW
+--------------------------------------------------------------------------------
+Project Name     : AgriVision AI
+Domain           : Agriculture (AI & Computer Vision)
+Team Name        : Techno_VG
+Team Leader      : Gaurav Tribhuwan
+Team Member      : Vedant Deshmukh
+
+--------------------------------------------------------------------------------
+SLIDE 2: HACKATHON PROBLEM STATEMENTS / PROMPTS
+--------------------------------------------------------------------------------
+Our prototype directly solves the following 2 problem statements:
+
+PROMPT 1 (Crop Disease Detection):
+"Build a computer-vision powered crop disease detection system that analyzes 
+ smartphone leaves images, diagnoses pathogen types, and recommends organic 
+ pest control options."
+
+PROMPT 2 (Predictive Soil & Fertilizer Mapping):
+"Create a predictive soil nutrient mapping dashboard that leverages satellite 
+ telemetry and local weather patterns to optimize fertilizer delivery schedules."
+
+--------------------------------------------------------------------------------
+SLIDE 3: THE PROBLEM IN AGRICULTURE
+--------------------------------------------------------------------------------
+• Heavy Crop Losses   : Farmers lose up to 40% of crop yields annually due to late 
+                        or inaccurate disease identification.
+• Soil Degradation    : Over-application or incorrect usage of chemical fertilizers 
+                        depletes long-term soil health.
+• Lack of Expertise   : Smallholder farmers lack instant access to agricultural 
+                        pathologists and agronomists.
+• Weather Uncertainty : Changing weather patterns lead to nutrient leaching and 
+                        treatment failure.
+
+--------------------------------------------------------------------------------
+SLIDE 4: THE PROPOSED SOLUTION (AGRIVISION AI)
+--------------------------------------------------------------------------------
+AgriVision AI is an end-to-end, AI-powered precision farming platform designed to:
+1. Instant Leaf Diagnosis: Instantly detect plant diseases from smartphone photos.
+2. Soil Health Analysis : Predict NPK, pH, and organic carbon for any field coordinates.
+3. Smart Fertilizer Plan: Generate custom 12-week organic/chemical treatment schedules.
+4. Weather Integration  : Combine live climate data with treatment recommendations.
+
+--------------------------------------------------------------------------------
+SLIDE 5: KEY FEATURES & MODULES (PROMPTS IMPLEMENTATION)
+--------------------------------------------------------------------------------
+1. AI Crop Disease Detector (Solving Prompt 1)
+   - Powered by Google Gemini Vision AI.
+   - Analyzes smartphone leaf photos in real-time.
+   - Identifies 38+ plant disease classes across major crops (Tomato, Potato, Corn, Rice, Apple, Grape, etc.).
+   - Returns disease name, pathogen type (Fungal/Bacterial/Viral/Pest), severity %, and organic remedies.
+
+2. Predictive Soil Nutrient Mapping Dashboard (Solving Prompt 2)
+   - Evaluates latitude/longitude field coordinates + OpenWeather climate telemetry.
+   - Calculates Nitrogen (N), Phosphorus (P), Potassium (K), pH, Organic Carbon %, and Micronutrients (Zn, Fe, S).
+   - Generates an interactive 7x7 spatial field health heatmap.
+
+3. Smart Fertilizer Delivery Schedule
+   - Generates a week-by-week treatment calendar tailored to specific soil deficiencies.
+   - Prioritizes organic fertilizers (FYM, Neem-coated Urea, Bio-mix) to prevent soil degradation.
+
+4. Real-Time Weather Intelligence
+   - Integrates live temperature, humidity, rainfall, and wind speeds via OpenWeather API.
+   - Adjusts spray advice (e.g., advising foliar sprays vs soil drench based on rain forecasts).
+
+--------------------------------------------------------------------------------
+SLIDE 6: SYSTEM ARCHITECTURE & WORKFLOW
+--------------------------------------------------------------------------------
+[User Uploads Image / Selects Location]
+           │
+           ▼
+[React Frontend Interface] ──(Axios REST API)──► [Express Node.js Backend Server]
+                                                           │
+              ┌────────────────────────────────────────────┴────────────────────────────────────────────┐
+              ▼                                                                                         ▼
+   [Google Gemini AI Engine]                                                                  [OpenWeather API]
+   (Vision & Agronomy Prompt Engineering)                                                     (Live Climate Data)
+              │                                                                                         │
+              └────────────────────────────────────────────┬────────────────────────────────────────────┘
+                                                           │
+                                                           ▼
+                                               [MongoDB Atlas Cloud DB]
+                                              (Stores Diagnosis & Soil History)
+
+--------------------------------------------------------------------------------
+SLIDE 7: TECHNOLOGY STACK
+--------------------------------------------------------------------------------
+• Frontend      : React.js, Vite, React Router, Lucide Icons, Leaflet Maps
+• Styling       : Modern Custom CSS (Glassmorphism design, responsive layouts)
+• Backend       : Node.js, Express.js
+• Database      : MongoDB Atlas (Mongoose ORM)
+• AI & ML       : Google Gemini AI SDK (@google/genai)
+• External APIs : OpenWeather Map API
+• Authentication: JSON Web Tokens (JWT) + Bcrypt password hashing
+
+--------------------------------------------------------------------------------
+SLIDE 8: BUSINESS IMPACT & FUTURE SCOPE
+--------------------------------------------------------------------------------
+Impact:
+• Reduces fertilizer cost by 25–30% through targeted nutrient application.
+• Prevents massive crop yield loss by identifying diseases in early stages.
+• Promotes sustainable farming practices via organic treatment recommendations.
+
+Future Roadmap:
+• IoT Sensor Integration : Connect directly to NPK soil sensors via microcontrollers (ESP32/Arduino).
+• Multilingual Support  : Regional Indian language voice and text translation (Hindi, Marathi, Punjabi, Tamil).
+• Offline Mobile App    : On-device quantized TensorFlow Lite model for internet-free rural operation.
+================================================================================

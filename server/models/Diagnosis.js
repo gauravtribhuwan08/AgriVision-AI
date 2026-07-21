@@ -12,7 +12,7 @@ const diagnosisSchema = new mongoose.Schema({
   diseaseName: { type: String, required: true },
   pathogenType: {
     type: String,
-    enum: ['Fungal', 'Bacterial', 'Viral', 'Nutrient Deficiency', 'Healthy'],
+    enum: ['Fungal', 'Bacterial', 'Viral', 'Pest', 'Insect', 'Nutrient Deficiency', 'Healthy', 'Unknown'],
     required: true
   },
   confidence: { type: Number, required: true, min: 0, max: 100 },
