@@ -8,6 +8,7 @@ const diagnoseRoutes = require('./routes/diagnose');
 const soilRoutes = require('./routes/soil');
 const weatherRoutes = require('./routes/weather');
 const authRoutes = require('./routes/auth');
+const chatbotRoutes = require('./routes/chatbot');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -36,6 +37,7 @@ app.use('/api/diagnose', diagnoseRoutes);
 app.use('/api/soil', soilRoutes);
 app.use('/api/weather', weatherRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

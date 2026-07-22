@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   timeout: 30000,
 });
 
@@ -37,6 +37,9 @@ export const getSoilPrediction = (id) => api.get(`/soil/${id}`);
 
 // Weather
 export const getWeather = (lat, lon) => api.get(`/weather/${lat}/${lon}`);
+
+// Chatbot
+export const chatWithBot = (data) => api.post('/chatbot', data);
 
 // Health
 export const checkHealth = () => api.get('/health');

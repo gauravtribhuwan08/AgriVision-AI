@@ -6,6 +6,7 @@ const navItems = [
   { to: '/', label: 'Home', icon: '🏠', exact: true },
   { to: '/detect', label: 'Detect Disease', icon: '🔬' },
   { to: '/soil', label: 'Soil Dashboard', icon: '🛰️' },
+  { to: '/chat', label: 'AgriBot Chat', icon: '💬' },
   { to: '/history', label: 'History', icon: '📋' },
   { to: '/about', label: 'About', icon: 'ℹ️' },
 ];

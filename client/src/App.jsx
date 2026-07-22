@@ -11,6 +11,8 @@ import SoilDashboard from './pages/SoilDashboard';
 import History from './pages/History';
 import About from './pages/About';
 import Auth from './pages/Auth';
+import Chat from './pages/Chat';
+import FloatingChatbot from './components/FloatingChatbot';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
@@ -40,6 +42,11 @@ export default function App() {
                   <SoilDashboard />
                 </ProtectedRoute>
               } />
+              <Route path="/chat" element={
+                <ProtectedRoute>
+                  <Chat />
+                </ProtectedRoute>
+              } />
               <Route path="/history" element={
                 <ProtectedRoute>
                   <History />
@@ -60,6 +67,7 @@ export default function App() {
           </Routes>
         </main>
         <Footer />
+        <FloatingChatbot />
       </div>
       <ToastContainer
         position="bottom-right"
